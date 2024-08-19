@@ -1,0 +1,62 @@
+﻿@model Review_Filmes.Web.Entity.DTO.FilmeReview
+
+@{
+    ViewData["Title"] = "Get";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+	<div class="page">
+		<div class="content">
+			<div class="row">
+				<div class="col-md-6">
+					<figure class="movie-poster"><img src="@Model.Filme.Thumb" alt="#"></figure>
+				</div>
+				<div class="col-md-6">
+					<h2 class="movie-title">@Model.Filme.Titulo</h2>
+					<div class="movie-summary">
+						<p>@Model.Filme.Resumo</p>
+					</div>
+					<ul class="movie-meta">
+						<!-- <li><strong>Rating:</strong>
+							<div class="star-rating" title="Rated 3.00 out of 5"><span style="width:80%"><strong
+										class="rating">3.00</strong> out of 5</span></div>
+						</li> -->
+						<li><strong>Lançamento:</strong>@Model.Filme.Lancamento</li>
+						<li><strong>Categoria:</strong>@Model.Filme.Categoria</li>
+					</ul>
+
+					<ul class="starring">
+						<li><strong>Direção:</strong>@Model.Filme.Direcao</li>
+						<li><strong>Elenco:</strong>@Model.Filme.Elenco</li>
+					</ul>
+				</div>
+			</div> <!-- .row -->
+			<div class="content">
+				<div class="row">
+					<div class="col-md-9">
+						<h2>Novo Review</h2>
+						<div class="contact-form">
+							<form asp-action="AddReview" asp-antiforgery="true" method="post">
+								<input type="hidden" asp-for="FilmeID" />
+								<input type="text" required class="name" placeholder="Nome..."
+									   asp-for="Nome" />
+								<textarea asp-for="Avaliacao" class="message" required placeholder="Review..." >@Model.Avaliacao</textarea>
+								<input type="submit" value="Enviar Review">
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					@foreach (Review_Filmes.Domain.Models.Review review in Model.Filme.Reviews)
+					{
+						<div class="col-md-9">
+							<h2 class="section-title">@review.Nome</h2>
+							<p>@review.Descricao</p>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div> <!-- .container -->

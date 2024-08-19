@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model Review_Filmes.Web.Entity.DTO.PaginaInicialDTO
+
+<div class="container">
+	<div class="page">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="slider">
+					<ul class="slides">
+						@foreach (Review_Filmes.Domain.Models.Filme filme in Model.Carrossel)
+			{
+							<li><a asp-controller="Filme" asp-action="Get" asp-route-id="@filme.FilmeId"><img src="@filme.Slide" /></a></li>
+			}
+					</ul>
+				</div>
+			</div>
+		</div> <!-- .row -->
+		<div class="movie-list">
+			@foreach (Review_Filmes.Domain.Models.Filme filme in Model.Filmes)
+			{
+				<div class="movie">
+					<figure class="movie-poster"><img src="@filme.Thumb" alt="#"></figure>
+					<div class="movie-title"><a asp-controller="Filme" asp-action="Get" asp-route-id="@filme.FilmeId">@filme.Titulo</a></div>
+					<p>@filme.Resumo</p>
+				</div>
+			}
+		</div>
+	</div>
+</div> <!-- .container -->
