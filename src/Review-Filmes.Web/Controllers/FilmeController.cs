@@ -52,14 +52,14 @@ namespace Review_Filmes.Web.Controllers
 		public IActionResult AddReview([FromForm] FilmeReview review)
 		{
 			Filme filme = this._context.Filmes.Where(i => i.FilmeId == review.FilmeID).SingleOrDefault();
-
+var reviewId = review.FilmeID;
 			if (filme != null)
 			{
 				filme.AddReview(new Review(review.FilmeID, review.Nome, review.Avaliacao));
 				this._context.SaveChanges();
 			}
 
-			return RedirectToAction(actionName: "Get", controllerName: "Filme", new { id = review.FilmeID });
+			return RedirectToAction(actionName: "Get", controllerName: "Filme", new { id = reviewId });
 		}
 	}
 
