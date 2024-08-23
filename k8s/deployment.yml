@@ -1,0 +1,79 @@
+# Create postgres
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgre
+        image: postgres:13.1
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: Passw0rd2024!
+        - name: POSTGRES_USER
+          value: reviewvideo
+        - name: POSTGRES_DB
+          value: reviewvideo
+---
+# Create postgres service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+  type: ClusterIP
+---
+# Create Review-app 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviewvideo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reviewvideo
+  template:
+    metadata:
+      labels:
+        app: reviewvideo
+    spec:
+      containers:
+      - name: reviewvideo
+        image: fabricioveronez/devops4dev-review:v2
+        ports:
+        - containerPort: 8080
+        env:
+          - name: ASPNETCORE_HTTP_PORTS
+            value: "8080"
+          - name: ConnectionStrings__DefaultConnection
+            value: "Host=postgres;Database=reviewvideo;Username=reviewvideo;Password=Passw0rd2024!"
+---
+# Create Review-app Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviewvideo
+spec:
+  selector:
+    app: reviewvideo
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
